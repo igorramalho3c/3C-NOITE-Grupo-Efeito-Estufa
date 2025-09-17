@@ -1,224 +1,221 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Efeito Estufa Interativo</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Efeito Estufa - Apresentação</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+    }
 
-        header {
-            background: linear-gradient(to right, #4CAF50, #2E8B57);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    .slide {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transition: all 0.8s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transform: scale(0.95);
+    }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            animation: fadeInDown 1s ease;
-        }
+    .slide.active {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 1;
+    }
 
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #333;
-        }
+    h1, h2 {
+        margin: 20px 0;
+    }
 
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+    p, ul {
+        max-width: 700px;
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
 
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+    ul {
+        list-style: disc;
+        text-align: left;
+        margin: 20px auto;
+        padding-left: 20px;
+    }
 
-        section {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease-out;
-        }
+    .buttons {
+        position: absolute;
+        bottom: 30px;
+        display: flex;
+        gap: 20px;
+    }
 
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        transition: 0.3s;
+    }
 
-        section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+    button:hover {
+        background-color: #388E3C;
+    }
 
-        section p, section ul {
-            margin-bottom: 15px;
-        }
+    /* Gráfico de barras */
+    .chart {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: 20px;
+        gap: 20px;
+    }
 
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
+    .bar {
+        width: 60px;
+        background-color: #4CAF50;
+        border-radius: 5px 5px 0 0;
+        transition: height 1.5s ease;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        color: white;
+        font-weight: bold;
+    }
 
-        img:hover {
-            transform: scale(1.05);
-        }
+    /* Cores diferentes por slide */
+    #slide1 { background-color: #f0f8ff; color: #004d40; }
+    #slide2 { background-color: #fff3e0; color: #e65100; }
+    #slide3 { background-color: #e8f5e9; color: #1b5e20; }
+    #slide4 { background-color: #f3e5f5; color: #4a148c; }
+    #slide5 { background-color: #e1f5fe; color: #01579b; }
 
-        .chart-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
+    img {
+        max-width: 60%;
+        border-radius: 10px;
+        margin-top: 20px;
+        transition: transform 0.3s;
+    }
 
-        .bar {
-            width: 120px;
-            margin: 10px;
-            text-align: center;
-        }
-
-        .bar div {
-            background-color: #4CAF50;
-            width: 100%;
-            height: 0;
-            border-radius: 8px;
-            transition: height 1.5s ease;
-        }
-
-        .bar span {
-            display: block;
-            margin-top: 8px;
-            font-weight: bold;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #333;
-            color: white;
-            margin-top: 30px;
-        }
-
-        @keyframes fadeInDown {
-            from {opacity: 0; transform: translateY(-20px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-    </style>
+    img:hover {
+        transform: scale(1.05);
+    }
+</style>
 </head>
 <body>
 
-<header>
-    <h1>Efeito Estufa Interativo</h1>
-</header>
+<!-- Slide 1 -->
+<section class="slide active" id="slide1">
+    <h1>Efeito Estufa</h1>
+    <p>Aprenda sobre o efeito estufa, suas causas, consequências e como reduzir seu impacto.</p>
+</section>
 
-<nav>
-    <a href="#causas">Causas</a>
-    <a href="#consequencias">Consequências</a>
-    <a href="#gases">Gases</a>
-</nav>
-
-<section id="causas">
+<!-- Slide 2 -->
+<section class="slide" id="slide2">
     <h2>Causas do Efeito Estufa</h2>
-    <p>O aumento de gases na atmosfera retém calor e provoca o efeito estufa. Principais causas:</p>
     <ul>
-        <li>Queima de combustíveis fósseis (carvão, petróleo e gás natural).</li>
-        <li>Desmatamento e queima de florestas.</li>
-        <li>Atividades industriais e agrícolas.</li>
-        <li>Emissões de veículos automotores.</li>
+        <li>Queima de combustíveis fósseis</li>
+        <li>Desmatamento e queimadas</li>
+        <li>Atividades industriais e agrícolas</li>
+        <li>Emissões de veículos</li>
     </ul>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Smog_in_Los_Angeles.jpg/640px-Smog_in_Los_Angeles.jpg" alt="Poluição urbana">
 </section>
 
-<section id="consequencias">
-    <h2>Consequências do Efeito Estufa</h2>
+<!-- Slide 3 -->
+<section class="slide" id="slide3">
+    <h2>Consequências</h2>
     <ul>
-        <li>Aquecimento global e aumento da temperatura média da Terra.</li>
-        <li>Derretimento das calotas polares e aumento do nível do mar.</li>
-        <li>Alterações nos padrões de chuva e secas prolongadas.</li>
-        <li>Impactos na biodiversidade e extinção de espécies.</li>
-        <li>Eventos climáticos extremos, como furacões e tempestades intensas.</li>
+        <li>Aquecimento global</li>
+        <li>Derretimento de geleiras e aumento do nível do mar</li>
+        <li>Alterações climáticas e secas prolongadas</li>
+        <li>Perda de biodiversidade</li>
+        <li>Eventos extremos, como furacões</li>
     </ul>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Melting_Glacier.jpg/640px-Melting_Glacier.jpg" alt="Derretimento de geleiras">
 </section>
 
-<section id="gases">
+<!-- Slide 4 -->
+<section class="slide" id="slide4">
     <h2>Gases do Efeito Estufa</h2>
-    <p>Principais gases e suas fórmulas químicas:</p>
-    <div class="chart-container">
-        <div class="bar">
-            <div data-height="30%"></div>
-            <span>CO<sub>2</sub></span>
-        </div>
-        <div class="bar">
-            <div data-height="20%"></div>
-            <span>CH<sub>4</sub></span>
-        </div>
-        <div class="bar">
-            <div data-height="10%"></div>
-            <span>N<sub>2</sub>O</span>
-        </div>
-        <div class="bar">
-            <div data-height="35%"></div>
-            <span>H<sub>2</sub>O</span>
-        </div>
-        <div class="bar">
-            <div data-height="5%"></div>
-            <span>CFCs</span>
-        </div>
+    <div class="chart">
+        <div class="bar" data-height="70%">CO<sub>2</sub></div>
+        <div class="bar" data-height="50%">CH<sub>4</sub></div>
+        <div class="bar" data-height="30%">N<sub>2</sub>O</div>
+        <div class="bar" data-height="35%">H<sub>2</sub>O</div>
+        <div class="bar" data-height="10%">CFCs</div>
     </div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Greenhouse_gas_effect.svg/640px-Greenhouse_gas_effect.svg.png" alt="Diagrama do efeito estufa">
 </section>
 
-<footer>
-    <p>&copy; 2025 Efeito Estufa Interativo - Educativo</p>
-</footer>
+<!-- Slide 5 -->
+<section class="slide" id="slide5">
+    <h2>Como reduzir?</h2>
+    <ul>
+        <li>Reduzir emissão de gases</li>
+        <li>Usar energia renovável</li>
+        <li>Preservar florestas</li>
+        <li>Economizar energia e água</li>
+    </ul>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Solar_panels_in_field.jpg/640px-Solar_panels_in_field.jpg" alt="Energia renovável">
+</section>
+
+<!-- Navegação -->
+<div class="buttons">
+    <button id="prev">Anterior</button>
+    <button id="next">Próximo</button>
+</div>
 
 <script>
-    // Animação ao rolar
-    const sections = document.querySelectorAll('section');
-    const bars = document.querySelectorAll('.bar div');
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
 
-    function checkVisibility() {
-        const triggerBottom = window.innerHeight * 0.85;
+    const bars = document.querySelectorAll('.bar');
 
-        sections.forEach(section => {
-            const sectionTop = section.getBoundingClientRect().top;
-            if(sectionTop < triggerBottom) {
-                section.classList.add('visible');
-            }
+    function showSlide(index) {
+        slides.forEach((s, i) => {
+            s.classList.remove('active');
+            if(i === index) s.classList.add('active');
         });
 
-        bars.forEach(bar => {
-            const barParentTop = bar.parentElement.getBoundingClientRect().top;
-            if(barParentTop < triggerBottom) {
+        // Animar barras apenas no slide 4
+        if(slides[index].id === 'slide4') {
+            bars.forEach(bar => {
                 bar.style.height = bar.getAttribute('data-height');
-            }
-        });
+            });
+        } else {
+            bars.forEach(bar => bar.style.height = "0");
+        }
     }
 
-    window.addEventListener('scroll', checkVisibility);
-    window.addEventListener('load', checkVisibility);
+    document.getElementById('next').addEventListener('click', () => {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+    });
+
+    // Ativar barras ao carregar slide inicial
+    showSlide(current);
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
